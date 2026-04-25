@@ -8,7 +8,7 @@ for i,b in ipairs(xnet.getConnectedBlocks()) do
   if(b.name == "tconstruct:smeltery_io") then
     for i,x in ipairs(xnet.getFluids(b.pos)) do
       local name = {}
-      for str in string.gmatch(x.content.label, " ") do
+      for str in string.gmatch(x.content.label, "%s") do
         table.insert(name, str)
       end
 
@@ -16,7 +16,7 @@ for i,b in ipairs(xnet.getConnectedBlocks()) do
         table.remove(name, 1)
       end
 
-      local name_str = table.concat(name, " ")
+      local name_str = table.concat(name, "%s")
 
       print("> " .. name_str .. " " .. x.content.amount .. "mb")
     end
