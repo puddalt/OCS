@@ -8,9 +8,13 @@ local xnet = component.xnet
 for i,b in ipairs(xnet.getConnectedBlocks()) do
   if(b.name == "tconstruct:smeltery_io") then
     for i,x in ipairs(xnet.getFluids(b.pos)) do
-      io.write("> " .. x.content.name .. " " )
+      gpu.setForeground(0xD3D3D3)
+      io.write("> ")
+      gpu.setForeground(0xFFFFFF)
+      io.write(x.content.name .. " " )
       gpu.setForeground(0x008080)
       io.write(x.content.amount .. "mb \n")
+      gpu.setForeground(0xFFFFFF)
     end
   end
 end
