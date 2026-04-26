@@ -11,6 +11,12 @@ local function handleMessage(_, _, sender, port, _, message)
         if not result or result == "" then
             result = "[Command executed with no output]"
         end
+
+        print("\n--- Remote Command Received ---")
+        print("From: " .. sender)
+        print("Cmd:  " .. tostring(message))
+        print("Output:\n" .. result)
+        print("-------------------------------")
       
       component.modem.send(sender, 400, result)
     end
