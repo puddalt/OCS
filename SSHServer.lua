@@ -18,7 +18,8 @@ local function handleMessage(_, _, sender, port, _, message)
         print("Output:\n" .. result)
         print("-------------------------------")
       
-      component.modem.broadcast(400, result)
+        os.sleep(1)
+      component.modem.send(sender, 400, result)
     end
   end
 
