@@ -1,18 +1,26 @@
-function start()
-    local thread = require("thread")
-    local component = require("component")
-    local shell = require("shell")
-    local event = require("event")
-    local modem = component.modem
-    
+local event = require("event")
+local shell = require("shell")
+local component = require("component")
 
-    thread.create(function ()
-        modem.open(400)
-        while true do
-            local _, receiverAddress, senderAddress, port, distance, message = event.pull("modem_message")
-            if message then
-                shell.execute(tostring(message))
-            end
-        end
-    end):detach()
+local function handleMessage(_, _, sender, port, _, message)
+    if port == 400 and message then
+        local handle = io.popen(tostring(message))
+        local result = handle:read("*a")
+        handle:close()
+      
+      component.modem.send(sender, 400, result)
+    end
+  end
+
+function start()
+  if component.isAvailable("modem") then
+    component.modem.open(400)
+    event.listen("modem_message", handleMessage)
+  else
+    io.stderr:write("Error: No modem found!\n")
+  end
+end
+
+function stop()
+  event.ignore("modem_message", handleMessage)
 end
