@@ -4,9 +4,13 @@ local component = require("component")
 
 local function handleMessage(_, _, sender, port, _, message)
     if port == 400 and message then
-        local handle = io.popen(tostring(message))
+        local handle = io.popen(tostring(message) .. " 2>&1")
         local result = handle:read("*a")
         handle:close()
+
+        if not result or result == "" then
+            result = "[Command executed with no output]"
+        end
       
       component.modem.send(sender, 400, result)
     end
